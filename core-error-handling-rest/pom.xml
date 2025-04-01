@@ -81,4 +81,22 @@
             </plugin>
         </plugins>
     </build>
+	<distributionManagement>
+            <repository>
+                <id>github</id>
+                <url>https://maven.pkg.github.com/netcracker/qubership-core-error-handling</url>
+            </repository>
+	</distributionManagement>
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/netcracker/*</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>
