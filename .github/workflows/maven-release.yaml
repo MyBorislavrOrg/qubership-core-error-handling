@@ -46,6 +46,8 @@ jobs:
   deploy:
     needs: dry-run-build
     if: ${{ needs.dry-run-build.result == 'success' }}
+    outputs:
+      release-version: ${{ steps.build-and-publish.outputs.release-version }}
     runs-on: ubuntu-latest
     steps:
       - name: "Build and Publish"
@@ -67,5 +69,5 @@ jobs:
     if: ${{ needs.deploy.result == 'success' }}
     uses: netcracker/qubership-workflow-hub/.github/workflows/release-drafter.yml@main
     with:
-      version: ${{ github.event.client_payload.version }}
+      version: ${{ needs.deploy.outputs.release-version }}
       publish: true
