@@ -38,7 +38,10 @@ jobs:
           version-type: ${{ github.event.inputs.version-type }}
           module: ${{ github.event.repository.name }}
           maven-args: ''
+          profile: ${{ inputs.profile }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
           dry-run: 'true'
   deploy:
     needs: dry-run-build
@@ -53,11 +56,11 @@ jobs:
           module: ${{ github.event.repository.name }}
           maven-args: ""
           token: ${{ secrets.GITHUB_TOKEN }}
-          dry-run: 'false'
           server-id: ${{ inputs.profile }}
           profile: ${{ inputs.profile }}
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          dry-run: 'false'
 
   github-release:
     needs: deploy
