@@ -23,7 +23,7 @@ on:
         required: false
         default: ''
       mvn-args:
-        description: 'Additional maven arguments to pass (e.g. -DskipTests=true -Dmaven.javadoc.skip=true -B)'
+        description: 'Additional maven arguments to pass (e.g. -DskipTests=true -Dmaven.javadoc.skip=true)'
         required: false
         default: ''
         type: string
