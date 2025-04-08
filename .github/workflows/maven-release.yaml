@@ -18,10 +18,9 @@ on:
         description: 'Maven profile to use'
         type: choice
         options:
-          - ''
           - 'github'
           - 'central'
-        required: true
+        required: false
         default: ''
 
 permissions:
