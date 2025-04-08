@@ -22,6 +22,11 @@ on:
           - 'central'
         required: false
         default: ''
+      mvn-args:
+        description: 'Additional maven arguments to pass (e.g. -DskipTests=true -Dmaven.javadoc.skip=true -B)'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: write
@@ -36,7 +41,7 @@ jobs:
         with:
           version-type: ${{ github.event.inputs.version-type }}
           module: ${{ github.event.repository.name }}
-          maven-args: ''
+          maven-args: ${{ inputs.mvn-args}}
           profile: ${{ inputs.profile }}
           token: ${{ secrets.GITHUB_TOKEN }}
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
