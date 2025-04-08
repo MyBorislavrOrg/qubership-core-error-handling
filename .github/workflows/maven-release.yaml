@@ -41,7 +41,7 @@ jobs:
         with:
           version-type: ${{ github.event.inputs.version-type }}
           module: ${{ github.event.repository.name }}
-          maven-args: ${{ inputs.mvn-args}}
+          maven-args: ${{ inputs.mvn-args }}
           profile: ${{ inputs.profile }}
           token: ${{ secrets.GITHUB_TOKEN }}
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -60,7 +60,7 @@ jobs:
         with:
           version-type: ${{ github.event.inputs.version-type }}
           module: ${{ github.event.repository.name }}
-          maven-args: ""
+          maven-args: ${{ inputs.mvn-args }}
           token: ${{ secrets.GITHUB_TOKEN }}
           server-id: ${{ inputs.profile }}
           profile: ${{ inputs.profile }}
