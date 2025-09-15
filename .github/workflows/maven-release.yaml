@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Build and Publish"
-        uses: netcracker/qubership-workflow-hub/actions/maven-release@feature/maven-release-plugin
+        uses: netcracker/qubership-workflow-hub/actions/maven-release@v1.0.5
         with:
           version-type: ${{ github.event.inputs.version-type }}
           module: ${{ github.event.repository.name }}
@@ -56,7 +56,7 @@ jobs:
     steps:
       - name: "Build and Publish"
         id: build-and-publish
-        uses: netcracker/qubership-workflow-hub/actions/maven-release@feature/maven-release-plugin
+        uses: netcracker/qubership-workflow-hub/actions/maven-release@v1.0.5
         with:
           version-type: ${{ github.event.inputs.version-type }}
           module: ${{ github.event.repository.name }}
@@ -67,7 +67,12 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
           dry-run: 'false'
-
+      - name: Upload all Maven target directories
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ github.event.repository.name }}
+          path: '**/target'
+          working-directory: ${{ github.event.repository.name }}
   github-release:
     needs: deploy
     if: ${{ needs.deploy.result == 'success' }}
