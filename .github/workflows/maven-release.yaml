@@ -64,7 +64,7 @@ jobs:
       - uses: actions/download-artifact@v5.0.0
         with:
           path: './'
-          merge-multiple: true
+          merge-multiple: false
       - run: |
          ls -laR
          
