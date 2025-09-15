@@ -33,50 +33,29 @@ permissions:
   packages: write
 
 jobs:
-  dry-run-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Build and Publish"
-        uses: netcracker/qubership-workflow-hub/actions/maven-release@v1.0.5
-        with:
-          version-type: ${{ github.event.inputs.version-type }}
-          module: ${{ github.event.repository.name }}
-          maven-args: ${{ inputs.mvn-args }}
-          profile: ${{ inputs.profile }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          dry-run: 'true'
   deploy:
-    needs: dry-run-build
-    if: ${{ needs.dry-run-build.result == 'success' }}
-    outputs:
-      release-version: ${{ steps.build-and-publish.outputs.release-version }}
     runs-on: ubuntu-latest
     steps:
       - name: "Build and Publish"
-        id: build-and-publish
         uses: netcracker/qubership-workflow-hub/actions/maven-release@v1.0.5
         with:
           version-type: ${{ github.event.inputs.version-type }}
           module: ${{ github.event.repository.name }}
           maven-args: ${{ inputs.mvn-args }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          server-id: ${{ inputs.profile }}
           profile: ${{ inputs.profile }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
           dry-run: 'false'
+          ref: ${{ github.ref }}
+          server-id: ${{ inputs.profile }}
+          maven-user: ${{ inputs.profile == 'github' && github.actor || secrets.MAVEN_USER }}
+          maven-password: ${{ inputs.profile == 'github' && secrets.GITHUB_TOKEN || secrets.MAVEN_PASSWORD }}
+
       - name: Upload all Maven target directories
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ github.event.repository.name }}
           path: '**/target'
           working-directory: ${{ github.event.repository.name }}
-  github-release:
-    needs: deploy
-    if: ${{ needs.deploy.result == 'success' }}
-    uses: netcracker/qubership-workflow-hub/.github/workflows/release-drafter.yml@main
-    with:
-      version: ${{ needs.deploy.outputs.release-version }}
-      publish: true
+
