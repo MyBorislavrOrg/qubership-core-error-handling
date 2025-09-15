@@ -57,3 +57,14 @@ jobs:
         with:
           name: ${{ github.event.repository.name }}
           path: '${{ github.event.repository.name }}/**/target'
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v5.0.0
+        with:
+          path: './'
+          merge-multiple: true
+      - run: |
+         ls -laR
+         
+    
